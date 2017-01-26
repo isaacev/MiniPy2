@@ -1,9 +1,35 @@
 {
+  "scripts": {
+    "test": "mocha -r ts-node/register test/tests.ts",
+    "cover": "NODE_ENV=test nyc npm t"
+  },
+  "nyc": {
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html"
+    ],
+    "all": true
+  },
   "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.38",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-typescript": "^3.1.4",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
+    "nyc": "^10.1.2",
+    "ts-node": "^2.0.0",
     "typescript": "^2.1.5"
   }
 }
