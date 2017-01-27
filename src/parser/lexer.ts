@@ -77,12 +77,22 @@ export default class Lexer {
       return true
     }
 
-    this.backupChar()
+    if (c !== grammar.EOF) {
+      this.backupChar()
+    }
+
     return false
   }
 
   acceptRun (valid: string) {
-    while (valid.indexOf(this.nextChar()) >= 0) {}
+    let c = this.nextChar()
+    while (valid.indexOf(c) >= 0) {
+      c = this.nextChar()
+
+      if (c === grammar.EOF) {
+        return
+      }
+    }
 
     this.backupChar()
   }
