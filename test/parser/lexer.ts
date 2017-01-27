@@ -10,6 +10,7 @@ import 'mocha'
 import { expect } from 'chai'
 
 // Module for testing.
+import * as grammar from '../../src/parser/grammar'
 import Token, {TokenType} from '../../src/parser/token'
 import Lexer from '../../src/parser/lexer'
 
@@ -59,12 +60,12 @@ describe('lexer', () => {
       expect(l.peekChar()).to.equal('y')
     })
 
-    it('should return empty string after EOF', () => {
+    it('should return null string after EOF', () => {
       let l = lexerFactory('x')
       expect(l.peekChar()).to.equal('x')
       l.nextChar() // 'x'
-      expect(l.peekChar()).to.equal('')
-      expect(l.peekChar()).to.equal('')
+      expect(l.peekChar()).to.equal(grammar.EOF)
+      expect(l.peekChar()).to.equal(grammar.EOF)
     })
   })
 
@@ -76,13 +77,13 @@ describe('lexer', () => {
       expect(l.nextChar()).to.equal('z')
     })
 
-    it('should return empty string after EOF', () => {
+    it('should return null string after EOF', () => {
       let l = lexerFactory('xyz')
       l.nextChar() // 'x'
       l.nextChar() // 'y'
       l.nextChar() // 'z'
-      expect(l.nextChar()).to.equal('')
-      expect(l.nextChar()).to.equal('')
+      expect(l.nextChar()).to.equal(grammar.EOF)
+      expect(l.nextChar()).to.equal(grammar.EOF)
     })
   })
 

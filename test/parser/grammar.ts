@@ -13,11 +13,12 @@ import * as grammar from '../../src/parser/grammar'
 
 describe('grammar', () => {
   describe('#isEOF', () => {
-    it('should accept empty strings', () => {
-      expect(grammar.isEOF('')).to.equal(true)
+    it('should accept null characters', () => {
+      expect(grammar.isEOF('\0')).to.equal(true)
     })
 
-    it('should reject non-empty strings', () => {
+    it('should reject non-null characters', () => {
+      expect(grammar.isEOF('')).to.equal(false)
       expect(grammar.isEOF('a')).to.equal(false)
       expect(grammar.isEOF(' ')).to.equal(false)
       expect(grammar.isEOF('\n')).to.equal(false)

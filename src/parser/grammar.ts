@@ -7,8 +7,14 @@
 
 import {TokenType} from './token'
 
+/**
+ * Since using an empty string to represent the end of a file can cause
+ * unpredictable behavior, a null character is used instead.
+ */
+export const EOF = '\0'
+
 export function isEOF (c: string): boolean {
-  return (c === '')
+  return (c === EOF)
 }
 
 export function isLineBreak (c: string): boolean {

@@ -58,7 +58,7 @@ export default class Lexer {
       return this.input[this.pos]
     }
 
-    return ''
+    return grammar.EOF
   }
 
   nextChar (): string {
@@ -68,11 +68,12 @@ export default class Lexer {
       return next
     }
 
-    return ''
+    return grammar.EOF
   }
 
   accept (valid: string): boolean {
-    if (valid.indexOf(this.nextChar()) >= 0) {
+    let c = this.nextChar()
+    if (valid.indexOf(c) >= 0) {
       return true
     }
 
@@ -258,7 +259,7 @@ function lexIdentifier (l: Lexer): stateFn {
         // absorb
         continue loop
       default:
-        if (r !== '') {
+        if (grammar.isEOF(r) === false) {
           l.backupChar()
         }
 
