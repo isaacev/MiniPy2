@@ -258,7 +258,10 @@ function lexIdentifier (l: Lexer): stateFn {
         // absorb
         continue loop
       default:
-        l.backupChar()
+        if (r !== '') {
+          l.backupChar()
+        }
+
         let word = l.currentSlice()
 
         switch (true) {
