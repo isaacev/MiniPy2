@@ -158,13 +158,11 @@ describe('lexer', () => {
         456
         1.23
         45.6e+123
-        # comment
         "abc"
         "def"
         - : ( ) [ ] * / +
         abc
-        _def
-        # foo`
+        _def`
 
       const l = lexerFactory(input)
 
@@ -225,6 +223,14 @@ describe('lexer', () => {
         const l = lexerFactory('123a')
         expectErrorToken(l, l.nextToken(), `bad number syntax: '123a'`, 1, 1)
       })
+    })
+
+    it('should ignore comments', () => {
+      const l1 = lexerFactory('# foo bar')
+      expectToken(l1.nextToken(), TokenType.EOF, '')
+
+      const l2 = lexerFactory('\n# foo bar\n')
+      expectToken(l2.nextToken(), TokenType.EOF, '')
     })
   })
 })
