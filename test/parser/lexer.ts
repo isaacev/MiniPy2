@@ -1,5 +1,5 @@
 //
-// tests/parser/lexer.ts
+// test/parser/lexer.ts
 // MiniPy2
 //
 // Created on 1/25/17
