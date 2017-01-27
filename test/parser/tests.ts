@@ -6,5 +6,4 @@
 //
 
 import './grammar'
-import './token'
 import './lexer'
