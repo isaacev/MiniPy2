@@ -256,7 +256,7 @@ function lexIdentifier (l: Lexer): stateFn {
     switch (true) {
       case grammar.isAlphaNumeric(r):
         // absorb
-        break
+        continue loop
       default:
         l.backupChar()
         let word = l.currentSlice()
