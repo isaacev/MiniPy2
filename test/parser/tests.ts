@@ -7,3 +7,4 @@
 
 import './grammar'
 import './lexer'
+import './parser'
