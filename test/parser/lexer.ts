@@ -26,7 +26,7 @@ function expectToken (tok: Token, typ: TokenType, lit: string) {
 
 function expectErrorToken (l: Lexer, tok: Token, lit: string, line: number, col: number) {
   expectToken(tok, TokenType.Error, lit)
-  const pos = l.getLineCol()
+  const pos = l.getLineCol(tok.loc)
   expect(pos[0]).to.equal(line)
   expect(pos[1]).to.equal(col)
 }

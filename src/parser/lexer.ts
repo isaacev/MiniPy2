@@ -30,12 +30,12 @@ export default class Lexer {
     this.buffer = []
   }
 
-  getLineCol (): [number, number] {
+  getLineCol (loc: number): [number, number] {
     let line = 1
     let col = 1
 
     for (let i = 0, l = this.input.length; i < l; i++) {
-      if (i === this.start) {
+      if (i === loc) {
         return [line, col]
       }
 
@@ -47,6 +47,8 @@ export default class Lexer {
         col++
       }
     }
+
+    return [line, col]
   }
 
   currentSlice (): string {
@@ -107,13 +109,13 @@ export default class Lexer {
 
   emit (t: TokenType) {
     let literal = this.currentSlice()
-    this.buffer.push(new Token(t, literal))
+    this.buffer.push(new Token(t, literal, this.start))
     this.start = this.pos
     return lexAny
   }
 
   emitError (msg: string): stateFn {
-    this.buffer.push(new Token(TokenType.Error, msg))
+    this.buffer.push(new Token(TokenType.Error, msg, this.start))
     this.backupChar()
     return null
   }

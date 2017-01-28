@@ -36,9 +36,11 @@ export enum TokenType {
 export default class Token {
   type: TokenType
   literal: string
+  loc: number
 
-  constructor (type: TokenType, literal: string) {
+  constructor (type: TokenType, literal: string, loc: number) {
     this.type = type
     this.literal = literal
+    this.loc = loc
   }
 }
