@@ -161,6 +161,7 @@ describe('lexer', () => {
         "abc"
         "def"
         - : ( ) [ ] * / + =
+        if
         abc
         _def`
 
@@ -194,6 +195,10 @@ describe('lexer', () => {
         expectToken(l.nextToken(), TokenType.Slash, '/')
         expectToken(l.nextToken(), TokenType.Plus, '+')
         expectToken(l.nextToken(), TokenType.Assign, '=')
+      })
+
+      it('should lex keywords', () => {
+        expectToken(l.nextToken(), TokenType.KeywordIf, 'if')
       })
 
       it('should lex identifiers', () => {
