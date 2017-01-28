@@ -24,6 +24,7 @@ export enum TokenType {
   // Operators & punctuation.
   Asterisk,
   Colon,
+  Bang,
   Comma,
   Dash,
   LeftBracket,
@@ -47,6 +48,7 @@ export function tokenTypeToSymbol (typ: TokenType): string {
   case TokenType.Str:           return 'STR'
   case TokenType.Asterisk:      return '*'
   case TokenType.Colon:         return ':'
+  case TokenType.Bang:          return '!'
   case TokenType.Comma:         return ','
   case TokenType.Dash:          return '-'
   case TokenType.LeftBracket:   return '['

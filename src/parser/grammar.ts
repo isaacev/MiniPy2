@@ -34,6 +34,7 @@ export function isOperatorStart (c: string): boolean {
     '-',
     ',',
     ':',
+    '!',
     '(',
     ')',
     '[',
