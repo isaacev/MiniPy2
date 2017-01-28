@@ -20,9 +20,9 @@ function parserFactory (input: string): Parser {
 
 function expectExprAST (input: string, expected: string) {
   let p = parserFactory(input)
-  let t = p.parseExpr(0)
+  let t = p.parseProg()
   let s = t.toString()
-  expect(s).to.equal(s)
+  expect(s).to.equal(expected)
 }
 
 function expectSyntaxError (input: string, errMsg: string) {
@@ -77,8 +77,8 @@ describe('parser', () => {
       })
 
       it('should parse binary infix operators', () => {
-        expectExprAST('a + a', '(- a)')
-        expectExprAST('a - a', '(- a)')
+        expectExprAST('a + a', '(+ a a)')
+        expectExprAST('a - a', '(- a a)')
       })
 
       it('should parse infix and prefix operators together', () => {
@@ -87,17 +87,17 @@ describe('parser', () => {
 
       it('should respect mathematical operator precedence', () => {
         // Native operator precedence.
-        expectExprAST('a + b + c', '(+ a (+ b c))')
-        expectExprAST('a + b - c', '(+ a (- b c))')
-        expectExprAST('a - b + c', '(- a (+ b c))')
-        expectExprAST('a * b + c', '(+ (* a b) c)')
-        expectExprAST('a + b * c', '(+ a (* b c))')
+        expectExprAST('a + b + c', '(+ (+ a b) c)')
+        expectExprAST('d + e - f', '(- (+ d e) f)')
+        expectExprAST('g - h + i', '(+ (- g h) i)')
+        expectExprAST('j * k + l', '(+ (* j k) l)')
+        expectExprAST('m + n * o', '(+ m (* n o))')
 
         // Native precedence overridden by parenthetical groups.
-        expectExprAST('(a + b) + c', '(+ (+ a b) c)')
-        expectExprAST('a + (b + c)', '(+ a (+ b c))')
-        expectExprAST('(a * b) + c', '(+ (* a b) c)')
-        expectExprAST('(a + b) * c', '(* (+ a b) c)')
+        expectExprAST('(p + q) + r', '(+ (+ p q) r)')
+        expectExprAST('s + (t + u)', '(+ s (+ t u))')
+        expectExprAST('(v * w) + x', '(+ (* v w) x)')
+        expectExprAST('(y + z) * a', '(* (+ y z) a)')
       })
     })
 
@@ -114,6 +114,12 @@ describe('parser', () => {
       it('should reject unterminated parentheticals', () => {
         expectSyntaxError('(2 + 2', `(1:7) expected token to be ')', got 'EOF'`)
       })
+    })
+  })
+
+  describe('#parseStmt', () => {
+    describe('simple statements', () => {
+      // ...
     })
   })
 })
