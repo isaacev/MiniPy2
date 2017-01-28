@@ -213,19 +213,34 @@ export default class Parser {
     return tok
   }
 
+  isStmtTerminator (): boolean {
+    switch (true) {
+      case this.currTokenIs(TokenType.SemiColon):
+      case this.currTokenIs(TokenType.EOF):
+        return true
+      default:
+        return false
+    }
+  }
+
+  expectStmtTerminator () {
+    switch (true) {
+      case this.isStmtTerminator():
+        return
+      default:
+        this.throwMissingTerminator()
+    }
+  }
+
   /**
    * TODO
    */
   expectExprTerminator () {
-    if (this.currTokenIs(TokenType.EOF)) {
-      return
-    }
-
     switch (true) {
+      case this.isStmtTerminator():
       case this.currTokenIs(TokenType.RightBracket):
       case this.currTokenIs(TokenType.RightParen):
       case this.currTokenIs(TokenType.Comma):
-      case this.currTokenIs(TokenType.EOF):
         return
       default:
         this.throwInfixParsingError(this.currToken)
@@ -255,6 +270,11 @@ export default class Parser {
   throwInfixParsingError (tok: Token) {
     let sym = tok.toSymbol()
     this.fatalError(tok, `unexpected '${sym}'`)
+  }
+
+  throwMissingTerminator () {
+    let sym = this.currToken.toSymbol()
+    this.fatalError(this.currToken, `unexpected '${sym}'`)
   }
 
   /**
@@ -420,6 +440,10 @@ export default class Parser {
  */
 function parseExprStmt (p: Parser): ast.ExprStmt {
   let expr = p.parseExpr(PrecLevel.Lowest)
+
+  p.expectExprTerminator()
+  p.expectStmtTerminator()
+  p.useAnyToken()
 
   return new ast.ExprStmt(expr)
 }

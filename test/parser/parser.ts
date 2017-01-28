@@ -25,6 +25,13 @@ function expectExprAST (input: string, expected: string) {
   expect(s).to.equal(expected)
 }
 
+function expectStmtAST (input: string, expected: string) {
+  let p = parserFactory(input)
+  let t = p.parseProg()
+  let s = t.toString()
+  expect(s).to.equal(expected.replace(/\) \(/g, ')\n\n('))
+}
+
 function expectSyntaxError (input: string, errMsg: string) {
   function run () {
     let p = parserFactory(input)
@@ -119,7 +126,16 @@ describe('parser', () => {
 
   describe('#parseStmt', () => {
     describe('simple statements', () => {
-      // ...
+      it('should respect semicolon and EOF terminators', () => {
+        expectStmtAST('a + b', '(+ a b)')
+        expectStmtAST('a + b;', '(+ a b)')
+        expectStmtAST('a + b; c - d', '(+ a b) (- c d)')
+        expectStmtAST('a + b; c - d;', '(+ a b) (- c d)')
+      })
+
+      it('should reject missing terminators', () => {
+        expectSyntaxError('a + b c - d', `(1:7) unexpected 'IDENT'`)
+      })
     })
   })
 })
