@@ -222,6 +222,8 @@ function lexOperator (l: Lexer): stateFn {
       return l.emit(TokenType.Slash)
     case '+':
       return l.emit(TokenType.Plus)
+    case '=':
+      return l.emit(TokenType.Assign)
   }
 }
 

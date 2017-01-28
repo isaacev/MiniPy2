@@ -160,7 +160,7 @@ describe('lexer', () => {
         45.6e+123
         "abc"
         "def"
-        - : ( ) [ ] * / +
+        - : ( ) [ ] * / + =
         abc
         _def`
 
@@ -193,6 +193,7 @@ describe('lexer', () => {
         expectToken(l.nextToken(), TokenType.Asterisk, '*')
         expectToken(l.nextToken(), TokenType.Slash, '/')
         expectToken(l.nextToken(), TokenType.Plus, '+')
+        expectToken(l.nextToken(), TokenType.Assign, '=')
       })
 
       it('should lex identifiers', () => {
