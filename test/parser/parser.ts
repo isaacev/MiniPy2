@@ -103,16 +103,16 @@ describe('parser', () => {
 
     describe('errors', () => {
       it('should reject unknown unary operators', () => {
-        expectSyntaxError('*5', `(1:1) unable to use '*' as the start of an expression`)
-        expectSyntaxError(']', `(1:1) unable to use ']' as the start of an expression`)
+        expectSyntaxError('*5', `(1:1) unexpected '*'`)
+        expectSyntaxError(']', `(1:1) unexpected ']'`)
       })
 
       it('should reject unknown binary operators', () => {
-        expectSyntaxError('2 , 2', `(1:3) unable to use ',' as the start of an expression`)
+        expectSyntaxError('2 , 2', `(1:3) unexpected ','`)
       })
 
       it('should reject unterminated parentheticals', () => {
-        expectSyntaxError('(2 + 2', `(1:7) expected token to be ')', got 'EOF'`)
+        expectSyntaxError('(2 + 2', `(1:7) expected ')', got 'EOF'`)
       })
     })
   })

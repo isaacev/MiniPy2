@@ -199,7 +199,7 @@ export default class Parser {
 
     let wantedSym = tokenTypeToSymbol(typ)
     let gotSym = this.currToken.toSymbol()
-    this.fatalError(this.currToken, `expected token to be '${wantedSym}', got '${gotSym}'`)
+    this.fatalError(this.currToken, `expected '${wantedSym}', got '${gotSym}'`)
   }
 
   /**
@@ -246,7 +246,7 @@ export default class Parser {
    */
   throwPrefixParsingError (tok: Token) {
     let sym = tok.toSymbol()
-    this.fatalError(tok, `unable to use '${sym}' as the start of an expression`)
+    this.fatalError(tok, `unexpected '${sym}'`)
   }
 
   /**
@@ -254,7 +254,7 @@ export default class Parser {
    */
   throwInfixParsingError (tok: Token) {
     let sym = tok.toSymbol()
-    this.fatalError(tok, `unable to use '${sym}' as an operator`)
+    this.fatalError(tok, `unexpected '${sym}'`)
   }
 
   /**
