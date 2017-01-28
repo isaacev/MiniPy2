@@ -32,6 +32,7 @@ export function isComment (c: string): boolean {
 export function isOperatorStart (c: string): boolean {
   const ops = [
     '-',
+    ',',
     ':',
     '(',
     ')',

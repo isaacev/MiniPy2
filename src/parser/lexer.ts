@@ -206,6 +206,8 @@ function lexOperator (l: Lexer): stateFn {
   switch (r) {
     case '-':
       return l.emit(TokenType.Dash)
+    case ',':
+      return l.emit(TokenType.Comma)
     case ':':
       return l.emit(TokenType.Colon)
     case '(':
