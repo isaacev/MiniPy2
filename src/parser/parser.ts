@@ -311,19 +311,6 @@ export default class Parser {
   }
 
   /**
-   * Return true if a given token is NOT allowed to be an infix operator. Only
-   * token symbols recogniezd by the infix parselet lookup table are allowed to
-   * act as infix operators.
-   */
-  noInfixParseletExists (tok: Token): boolean {
-    if (this.lookupInfixParselet(tok) === undefined) {
-      return true
-    }
-
-    return false
-  }
-
-  /**
    * currPrecedence determintes the precedence level for the current token in
    * the precedence lookup table. If the token's symbol is not in the table,
    * return the lowest possible precedence which equates to a non-binding
@@ -377,22 +364,6 @@ export default class Parser {
      * than the minimum precedence level passed into this function.
      */
     while (this.currPrecedence() > minPrecedence) {
-      /**
-       * In order for parsing to continue, the current token must be allowed to
-       * act as an infix operator within an expression (according to the syntax
-       * described in the infix parselet lookup table). If the current token
-       * isn't allowed to act as an infix operator, that doesn't _necessarily_
-       * represent an error but is means that the current expression can't be
-       * parsed any further so the expression can be returned.
-       */
-      if (this.noInfixParseletExists(this.currToken)) {
-        // Check that whatever token comes after this expression and was unable
-        // to be included in the expression is still legally allowed to come
-        // after an expression.
-        this.expectExprTerminator()
-        return expr
-      }
-
       // Once it's known that the token is legal, get the appropriate parsing
       // function from the infix parselet lookup table.
       let infixParselet = this.lookupInfixParselet(this.currToken)
