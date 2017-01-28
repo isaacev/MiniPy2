@@ -5,6 +5,7 @@
 // Created on 1/26/17
 //
 
+import './token'
 import './grammar'
 import './lexer'
 import './parser'
