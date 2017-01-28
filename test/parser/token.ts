@@ -22,6 +22,7 @@ describe('tokenTypeToSymbol', () => {
     expectSymbol(TokenType.KeywordAnd, 'AND')
     expectSymbol(TokenType.KeywordNot, 'NOT')
     expectSymbol(TokenType.KeywordOr, 'OR')
+    expectSymbol(TokenType.KeywordIf, 'IF')
     expectSymbol(TokenType.Bool, 'BOOL')
     expectSymbol(TokenType.Num, 'NUM')
     expectSymbol(TokenType.Str, 'STR')

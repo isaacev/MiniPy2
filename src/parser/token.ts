@@ -15,6 +15,7 @@ export enum TokenType {
   KeywordAnd,
   KeywordNot,
   KeywordOr,
+  KeywordIf,
 
   // Literals.
   Bool,
@@ -44,6 +45,7 @@ export function tokenTypeToSymbol (typ: TokenType): string {
   case TokenType.KeywordAnd:    return 'AND'
   case TokenType.KeywordNot:    return 'NOT'
   case TokenType.KeywordOr:     return 'OR'
+  case TokenType.KeywordIf:     return 'IF'
   case TokenType.Bool:          return 'BOOL'
   case TokenType.Num:           return 'NUM'
   case TokenType.Str:           return 'STR'

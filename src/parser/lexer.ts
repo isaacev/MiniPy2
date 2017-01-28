@@ -292,9 +292,9 @@ function lexIdentifier (l: Lexer): stateFn {
         let word = l.currentSlice()
 
         switch (true) {
-          // case grammar.keywords[word] !== undefined:
-          //   l.emit(grammar.keywords[word])
-          //   break
+          case grammar.isKeyword(word):
+            l.emit(grammar.keywords[word])
+            break
           case word === 'true' || word === 'false':
             l.emit(TokenType.Bool)
             break

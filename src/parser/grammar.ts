@@ -65,6 +65,10 @@ export function isAlphaNumeric (c: string): boolean {
   return (c === '_') || isLetter(c) || isDigit(c)
 }
 
-export const keywords = {
-  // ...
+export function isKeyword (word: string): boolean {
+  return (keywords[word] !== undefined)
+}
+
+export const keywords: { [key: string]: TokenType } = {
+  'if': TokenType.KeywordIf,
 }
