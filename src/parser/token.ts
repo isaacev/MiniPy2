@@ -33,6 +33,28 @@ export enum TokenType {
   Slash
 }
 
+export function tokenTypeToSymbol (typ: TokenType): string {
+  switch (typ) {
+  case TokenType.EOF:           return 'EOF'
+  case TokenType.Ident:         return 'IDENT'
+  case TokenType.KeywordAnd:    return 'AND'
+  case TokenType.KeywordNot:    return 'NOT'
+  case TokenType.KeywordOr:     return 'OR'
+  case TokenType.Bool:          return 'BOOL'
+  case TokenType.Num:           return 'NUM'
+  case TokenType.Str:           return 'STR'
+  case TokenType.Asterisk:      return '*'
+  case TokenType.Colon:         return ':'
+  case TokenType.Dash:          return '-'
+  case TokenType.LeftBracket:   return '['
+  case TokenType.LeftParen:     return '('
+  case TokenType.Plus:          return '+'
+  case TokenType.RightBracket:  return ']'
+  case TokenType.RightParen:    return ')'
+  case TokenType.Slash:         return '/'
+  }
+}
+
 export default class Token {
   type: TokenType
   literal: string
@@ -42,5 +64,9 @@ export default class Token {
     this.type = type
     this.literal = literal
     this.loc = loc
+  }
+
+  toSymbol (): string {
+    return tokenTypeToSymbol(this.type)
   }
 }
