@@ -210,6 +210,8 @@ function lexOperator (l: Lexer): stateFn {
       return l.emit(TokenType.Comma)
     case ':':
       return l.emit(TokenType.Colon)
+    case ';':
+      return l.emit(TokenType.SemiColon)
     case '!':
       return l.emit(TokenType.Bang)
     case '(':

@@ -33,6 +33,7 @@ export function isOperatorStart (c: string): boolean {
   const ops = [
     '-',
     ',',
+    ';',
     ':',
     '!',
     '(',
