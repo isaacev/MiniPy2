@@ -228,6 +228,12 @@ function lexOperator (l: Lexer): stateFn {
       return l.emit(TokenType.Plus)
     case '=':
       return l.emit(TokenType.Assign)
+    /* istanbul ignore next */
+    default:
+      // If execution reaches this point, that constitutes a bug caused by a
+      // disagreement between `lexOperator` and `Grammar#isOperatorStart`
+      // regarding the set of legal operator symbols.
+      return l.emitError(`unexpected symbol: '${r}'`)
   }
 }
 
