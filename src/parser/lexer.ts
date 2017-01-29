@@ -154,7 +154,7 @@ function lexAny (l: Lexer): stateFn {
         return lexEOF
       case grammar.isLineBreak(r):
         return lexLineBreak
-      case grammar.isWhitespace(r):
+      case grammar.isInlineWhitespace(r):
         l.ignore()
         break
       case grammar.isComment(r):

@@ -35,17 +35,18 @@ describe('grammar', () => {
     })
   })
 
-  describe('#isWhitespace', () => {
+  describe('#isInlineWhitespace', () => {
     it('should accept whitespace characters', () => {
-      expect(grammar.isWhitespace('')).to.equal(true)
-      expect(grammar.isWhitespace(' ')).to.equal(true)
-      expect(grammar.isWhitespace('\n')).to.equal(true)
-      expect(grammar.isWhitespace('\r')).to.equal(true)
-      expect(grammar.isWhitespace('\t')).to.equal(true)
+      expect(grammar.isInlineWhitespace('')).to.equal(true)
+      expect(grammar.isInlineWhitespace(' ')).to.equal(true)
+      expect(grammar.isInlineWhitespace('\r')).to.equal(true)
+      expect(grammar.isInlineWhitespace('\t')).to.equal(true)
     })
 
     it('should reject non-whitespace characters', () => {
-      expect(grammar.isWhitespace('a')).to.equal(false)
+      expect(grammar.isInlineWhitespace('\n')).to.equal(false)
+      expect(grammar.isInlineWhitespace('\0')).to.equal(false)
+      expect(grammar.isInlineWhitespace('a')).to.equal(false)
     })
   })
 

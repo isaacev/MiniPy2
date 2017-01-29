@@ -21,8 +21,8 @@ export function isLineBreak (c: string): boolean {
   return (c === '\n')
 }
 
-export function isWhitespace (c: string): boolean {
-  return (c <= ' ')
+export function isInlineWhitespace (c: string): boolean {
+  return (c <= ' ') && (isLineBreak(c) === false) && (isEOF(c) === false)
 }
 
 export function isComment (c: string): boolean {
