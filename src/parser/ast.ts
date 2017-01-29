@@ -27,10 +27,7 @@ export class Program {
   }
 
   toString (): string {
-    return this.stmts.reduce((out, stmt, i) => {
-      let padding = (i > 0) ? '\n\n' : ''
-      return out + padding + stmt.toString()
-    }, '')
+    return this.stmts.map(stmt => stmt.toString()).join('\n')
   }
 }
 

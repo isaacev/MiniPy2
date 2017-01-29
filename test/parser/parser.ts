@@ -29,7 +29,7 @@ function expectStmtAST (input: string, expected: string) {
   let p = parserFactory(input)
   let t = p.parseProg()
   let s = t.toString()
-  expect(s).to.equal(expected.replace(/\) \(/g, ')\n\n('))
+  expect(s).to.equal(expected.replace(/\) \(/g, ')\n('))
 }
 
 function expectSyntaxError (input: string, errMsg: string) {
