@@ -106,6 +106,34 @@ export class IfStmt {
   stmtNode () {}
 }
 
+export class WhileStmt {
+  cond: Expr
+  clause: Block
+
+  constructor (cond: Expr, clause: Block) {
+    this.cond = cond
+    this.clause = clause
+  }
+
+  toString () {
+    let clauseStr = this.clause
+      .toString()
+      .trim()
+      .split('\n')
+      .map(line => '\n  ' + line)
+      .join('')
+
+    return (
+      '(while (' + this.cond.toString() + ')' +
+      clauseStr +
+      ')'
+    )
+  }
+
+  /* istanbul ignore next */
+  stmtNode () {}
+}
+
 export class ElifClause {
   elifCond: Expr
   elifClause: Block

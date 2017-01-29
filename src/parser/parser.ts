@@ -390,6 +390,8 @@ export default class Parser {
     switch (this.currToken.type) {
       case TokenType.KeywordIf:
         return parseIfStmt(this)
+      case TokenType.KeywordWhile:
+        return parseWhileStmt(this)
       default:
         return parseExprStmt(this)
     }
@@ -438,6 +440,15 @@ function parseIfStmt (p: Parser): ast.IfStmt {
   }
 
   return new ast.IfStmt(ifCond, ifClause, elifClauses, elseClause)
+}
+
+function parseWhileStmt (p: Parser): ast.WhileStmt {
+  p.useToken(TokenType.KeywordWhile)
+
+  let cond = p.parseExpr(PrecLevel.Lowest)
+  let clause = p.parseBlock()
+
+  return new ast.WhileStmt(cond, clause)
 }
 
 /**
