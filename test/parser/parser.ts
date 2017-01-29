@@ -9,6 +9,9 @@
 import 'mocha'
 import { expect } from 'chai'
 
+// Utility modules.
+import { parseTestFile } from './util'
+
 // Module for testing.
 import SyntaxError from '../../src/parser/error'
 import Lexer from '../../src/parser/lexer'
@@ -135,6 +138,18 @@ describe('parser', () => {
 
       it('should reject missing terminators', () => {
         expectSyntaxError('a + b c - d', `(1:7) unexpected 'IDENT'`)
+      })
+    })
+
+    describe('if statements', () => {
+      let ifTests = parseTestFile('statements/if.txt')
+
+      it('should parse if conditions', () => {
+        ifTests.run('if condition')
+      })
+
+      it('should parse if-else conditions', () => {
+        ifTests.run('if-else condition')
       })
     })
   })

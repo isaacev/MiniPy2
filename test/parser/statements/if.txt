@@ -1,0 +1,25 @@
++++ if condition
+if x:
+  a = b + c;
+  d = e + f;
+---
+(if (x)
+  ((= a (+ b c))
+   (= d (+ e f)))
+---
+
+
++++ if-else condition
+if x:
+  a = b + c;
+  d = e + f;
+else:
+  g = h + i;
+  j = k + l;
+---
+(if (x)
+  ((= a (+ b c))
+   (= d (+ e f)))
+  ((= g (+ h i))
+   (= j (+ k l))))
+---
