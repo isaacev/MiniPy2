@@ -18,6 +18,8 @@ function expectSymbol (typ: TokenType, sym: string) {
 describe('tokenTypeToSymbol', () => {
   it('should convert TokenType to string', () => {
     expectSymbol(TokenType.EOF, 'EOF')
+    expectSymbol(TokenType.Indent, 'INDENT')
+    expectSymbol(TokenType.Dedent, 'DEDENT')
     expectSymbol(TokenType.Ident, 'IDENT')
     expectSymbol(TokenType.KeywordAnd, 'AND')
     expectSymbol(TokenType.KeywordNot, 'NOT')
