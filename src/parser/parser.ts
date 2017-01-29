@@ -388,6 +388,8 @@ export default class Parser {
    */
   parseStmt (): ast.Stmt {
     switch (this.currToken.type) {
+      case TokenType.KeywordIf:
+        return parseIfStmt(this)
       default:
         return parseExprStmt(this)
     }
@@ -411,6 +413,31 @@ export default class Parser {
 
     return new ast.Block(stmts)
   }
+}
+
+function parseIfStmt (p: Parser): ast.IfStmt {
+  p.useToken(TokenType.KeywordIf)
+
+  let ifCond = p.parseExpr(PrecLevel.Lowest)
+  let ifClause = p.parseBlock()
+
+  let elifClauses: ast.ElifClause[] = []
+  while (p.currTokenIs(TokenType.KeywordElif)) {
+    p.useToken(TokenType.KeywordElif)
+
+    let elifCond = p.parseExpr(PrecLevel.Lowest)
+    let elifClause = p.parseBlock()
+
+    elifClauses.push(new ast.ElifClause(elifCond, elifClause))
+  }
+
+  let elseClause = null
+  if (p.currTokenIs(TokenType.KeywordElse)) {
+    p.useToken(TokenType.KeywordElse)
+    elseClause = p.parseBlock()
+  }
+
+  return new ast.IfStmt(ifCond, ifClause, elifClauses, elseClause)
 }
 
 /**
