@@ -71,4 +71,6 @@ export function isKeyword (word: string): boolean {
 
 export const keywords: { [key: string]: TokenType } = {
   'if': TokenType.KeywordIf,
+  'elif': TokenType.KeywordElif,
+  'else': TokenType.KeywordElse,
 }
