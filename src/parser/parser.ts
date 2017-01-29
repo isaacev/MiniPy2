@@ -392,6 +392,25 @@ export default class Parser {
         return parseExprStmt(this)
     }
   }
+
+  parseBlock (): ast.Block {
+    let stmts: ast.Stmt[] = []
+
+    this.useToken(TokenType.Colon)
+    this.useToken(TokenType.Indent)
+
+    while (true) {
+      if (this.currTokenIs(TokenType.Dedent)) {
+        this.useToken(TokenType.Dedent)
+        break
+      }
+
+      let stmt = parseExprStmt(this)
+      stmts.push(stmt)
+    }
+
+    return new ast.Block(stmts)
+  }
 }
 
 /**
