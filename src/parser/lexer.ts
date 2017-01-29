@@ -21,6 +21,7 @@ export default class Lexer {
   pos: number
   state: stateFn
   buffer: Token[]
+  indentStack: number[]
 
   constructor (input: string) {
     this.input = input
@@ -28,6 +29,14 @@ export default class Lexer {
     this.pos = 0
     this.state = lexAny
     this.buffer = []
+    this.indentStack = [0]
+  }
+
+  clearIndentTo (indentDepth: number) {
+    while (indentDepth < this.indentStack[this.indentStack.length - 1]) {
+      this.emit(TokenType.Dedent)
+      this.indentStack.pop()
+    }
   }
 
   getLineCol (loc: number): [number, number] {
@@ -177,13 +186,71 @@ function lexAny (l: Lexer): stateFn {
 }
 
 function lexEOF (l: Lexer): stateFn {
+  l.clearIndentTo(0)
+
   l.emit(TokenType.EOF)
   return lexEOF
 }
 
 function lexLineBreak (l: Lexer): stateFn {
+  /**
+   * First stage of this lexing function ignores consecutive
+   * newline characters.
+   */
+
+  // Ignore initial newline.
   l.ignore()
+
+  // Ignore following newlines (if any).
+  while (grammar.isLineBreak(l.peekChar())) {
+    l.nextChar()
+    l.ignore()
+  }
+
+  // Quit the lexing function if the next character is EOF.
+  if (grammar.isEOF(l.peekChar())) {
+    return lexEOF
+  }
+
+  /**
+   * Second stage checks counts how deeply indented the current line is. If
+   * the line has only inline whitespace characters, throw an error since
+   * trailing whitespace is an error.
+   */
+
+  // Counts number of inline whitespace characters at the start of the line.
+  let indentDepth = getIndentDepth(l)
+
+  // Catches lines with only trailing whitespace.
+  if (indentDepth > 0 && grammar.isLineBreak(l.peekChar())) {
+    throw new Error('no trailing whitespace')
+  }
+
+  /**
+   * Third stage determines whether the indentaiton on the current line is more
+   * or less indentation than was present on the previous line. If there is more
+   * indentation, emit an Indent token. If there is less indentation, emit 1 or
+   * more Dedent tokens.
+   */
+
+  let prevIndentDepth = l.indentStack[l.indentStack.length - 1]
+
+  if (indentDepth > prevIndentDepth) {
+    l.indentStack.push(indentDepth)
+    l.emit(TokenType.Indent)
+  } else if (indentDepth < prevIndentDepth) {
+    l.clearIndentTo(indentDepth)
+  }
+
   return lexAny
+}
+
+function getIndentDepth (l: Lexer): number {
+  l.acceptRun(' ')
+  let depth = l.currentSlice().length
+  l.ignore()
+
+  return depth
 }
 
 function lexComment (l: Lexer): stateFn {

@@ -152,18 +152,18 @@ describe('lexer', () => {
   describe('#nextToken', () => {
     describe('legal syntax', () => {
       const input = `
-        true
-        false
-        123
-        456
-        1.23
-        45.6e+123
-        "abc"
-        "def"
-        - : ( ) [ ] * / + =
-        if
-        abc
-        _def`
+true
+false
+123
+456
+1.23
+45.6e+123
+"abc"
+"def"
+- : ( ) [ ] * / + =
+if
+abc
+_def`
 
       const l = lexerFactory(input)
 

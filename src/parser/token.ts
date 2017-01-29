@@ -9,6 +9,8 @@ export enum TokenType {
   // Special tokens.
   Error = 0,
   EOF,
+  Indent,
+  Dedent,
 
   // Word-like tokens.
   Ident,
@@ -41,6 +43,8 @@ export enum TokenType {
 export function tokenTypeToSymbol (typ: TokenType): string {
   switch (typ) {
   case TokenType.EOF:           return 'EOF'
+  case TokenType.Indent:        return 'INDENT'
+  case TokenType.Dedent:        return 'DEDENT'
   case TokenType.Ident:         return 'IDENT'
   case TokenType.KeywordAnd:    return 'AND'
   case TokenType.KeywordNot:    return 'NOT'
