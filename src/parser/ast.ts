@@ -19,6 +19,18 @@ export interface Stmt extends Node {
   stmtNode(): void
 }
 
+export class Block {
+  stmts: Stmt[]
+
+  constructor (stmts: Stmt[]) {
+    this.stmts = stmts
+  }
+
+  toString () {
+    return this.stmts.map(stmt => stmt.toString()).join('\n')
+  }
+}
+
 export class Program {
   stmts: Stmt[]
 
