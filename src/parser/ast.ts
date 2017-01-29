@@ -43,6 +43,37 @@ export class Program {
   }
 }
 
+export class IfStmt {
+  ifCond: Expr
+  ifClause: Block
+
+  constructor (ifCond: Expr, ifClause: Block) {
+    this.ifCond = ifCond
+    this.ifClause = ifClause
+  }
+
+  toString () {
+    let ifClauseStr = this.ifClause
+      .toString()
+      .split('\n')
+      .reduce((str, line, i) => {
+        if (i === 0) {
+          return str + '\n  (' + line
+        } else {
+          return str + '\n   ' + line
+        }
+      }, '') + ')'
+
+    return (
+      '(if (' + this.ifCond.toString() + ')' +
+      ifClauseStr
+    )
+  }
+
+  /* istanbul ignore next */
+  stmtNode () {}
+}
+
 export class ExprStmt {
   expr: Expr
 
