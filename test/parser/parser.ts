@@ -156,5 +156,13 @@ describe('parser', () => {
         ifTests.run('if-elif-else condition')
       })
     })
+
+    describe('while statements', () => {
+      let whileTests = parseTestFile('statements/while.txt')
+
+      it('should parse while conditions', () => {
+        whileTests.run('while condition')
+      })
+    })
   })
 })
