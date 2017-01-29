@@ -27,7 +27,13 @@ export class Block {
   }
 
   toString () {
-    return this.stmts.map(stmt => stmt.toString()).join('\n')
+    return this.stmts.reduce((str, stmt, i) => {
+      if (i === 0) {
+        return str + '\n(' + stmt.toString()
+      } else {
+        return str + '\n ' + stmt.toString()
+      }
+    }, '') + ')'
   }
 }
 
@@ -46,32 +52,83 @@ export class Program {
 export class IfStmt {
   ifCond: Expr
   ifClause: Block
+  elifClauses: ElifClause[]
+  elseClause: Block
 
-  constructor (ifCond: Expr, ifClause: Block) {
+  constructor (ifCond: Expr, ifClause: Block, elifClauses: ElifClause[], elseClause: Block) {
     this.ifCond = ifCond
     this.ifClause = ifClause
+    this.elifClauses = elifClauses
+    this.elseClause = elseClause
   }
 
   toString () {
     let ifClauseStr = this.ifClause
       .toString()
+      .trim()
       .split('\n')
-      .reduce((str, line, i) => {
-        if (i === 0) {
-          return str + '\n  (' + line
-        } else {
-          return str + '\n   ' + line
-        }
-      }, '') + ')'
+      .map(line => '\n  ' + line)
+      .join('')
+
+    let elifClauseStrs = ''
+
+    if (this.elifClauses !== null && this.elifClauses.length > 0) {
+      elifClauseStrs = this.elifClauses
+        .map(clause => clause.toString())
+        .join('')
+        .trim()
+        .split('\n')
+        .map(line => '\n  ' + line)
+        .join('')
+    }
+
+    let elseClauseStr = ''
+
+    if (this.elseClause !== null) {
+      elseClauseStr = this.elseClause
+        .toString()
+        .trim()
+        .split('\n')
+        .map(line => '\n  ' + line)
+        .join('')
+    }
 
     return (
       '(if (' + this.ifCond.toString() + ')' +
-      ifClauseStr
+      ifClauseStr +
+      elifClauseStrs +
+      elseClauseStr +
+      ')'
     )
   }
 
   /* istanbul ignore next */
   stmtNode () {}
+}
+
+export class ElifClause {
+  elifCond: Expr
+  elifClause: Block
+
+  constructor (elifCond: Expr, elifClause: Block) {
+    this.elifCond = elifCond
+    this.elifClause = elifClause
+  }
+
+  toString () {
+    let elifClauseStr = this.elifClause
+      .toString()
+      .trim()
+      .split('\n')
+      .map(line => '\n  ' + line)
+      .join('')
+
+    return (
+      '\n(elif (' + this.elifCond.toString() + ')' +
+      elifClauseStr +
+      ')'
+    )
+  }
 }
 
 export class ExprStmt {
