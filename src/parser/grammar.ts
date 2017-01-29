@@ -73,4 +73,5 @@ export const keywords: { [key: string]: TokenType } = {
   'if': TokenType.KeywordIf,
   'elif': TokenType.KeywordElif,
   'else': TokenType.KeywordElse,
+  'while': TokenType.KeywordWhile,
 }

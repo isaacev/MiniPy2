@@ -162,6 +162,7 @@ false
 "def"
 - : ( ) [ ] * / + =
 if
+while
 abc
 _def`
 
@@ -199,6 +200,7 @@ _def`
 
       it('should lex keywords', () => {
         expectToken(l.nextToken(), TokenType.KeywordIf, 'if')
+        expectToken(l.nextToken(), TokenType.KeywordWhile, 'while')
       })
 
       it('should lex identifiers', () => {
