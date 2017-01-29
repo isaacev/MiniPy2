@@ -151,6 +151,10 @@ describe('parser', () => {
       it('should parse if-else conditions', () => {
         ifTests.run('if-else condition')
       })
+
+      it('should parse if-elif-else conditions', () => {
+        ifTests.run('if-elif-else condition')
+      })
     })
   })
 })

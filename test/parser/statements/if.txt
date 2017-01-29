@@ -23,3 +23,31 @@ else:
   ((= g (+ h i))
    (= j (+ k l))))
 ---
+
+
++++ if-elif-else condition
+if x:
+  a = b + c;
+  d = e + f;
+elif y:
+  g = h + i;
+  j = k + l;
+elif z:
+  m = n + o;
+  p = q + r;
+else:
+  s = t + u;
+  v = w + x;
+---
+(if (x)
+  ((= a (+ b c))
+   (= d (+ e f)))
+  (elif (y)
+    ((= g (+ h i))
+     (= j (+ k l))))
+  (elif (z)
+    ((= m (+ n o))
+     (= p (+ q r))))
+  ((= s (+ t u))
+   (= v (+ w x))))
+---
