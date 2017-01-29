@@ -151,29 +151,14 @@ describe('lexer', () => {
 
   describe('#nextToken', () => {
     describe('legal syntax', () => {
-      const input = `
-true
-false
-123
-456
-1.23
-45.6e+123
-"abc"
-"def"
-- : ( ) [ ] * / + =
-if
-while
-abc
-_def`
-
-      const l = lexerFactory(input)
-
       it('should lex boolean literals', () => {
+        const l = lexerFactory('true false')
         expectToken(l.nextToken(), TokenType.Bool, 'true')
         expectToken(l.nextToken(), TokenType.Bool, 'false')
       })
 
       it('should lex number literals', () => {
+        const l = lexerFactory('123 456 1.23 45.6e+123')
         expectToken(l.nextToken(), TokenType.Num, '123')
         expectToken(l.nextToken(), TokenType.Num, '456')
         expectToken(l.nextToken(), TokenType.Num, '1.23')
@@ -181,11 +166,13 @@ _def`
       })
 
       it('should lex string literals', () => {
+        const l = lexerFactory('"abc" "def"')
         expectToken(l.nextToken(), TokenType.Str, '"abc"')
         expectToken(l.nextToken(), TokenType.Str, '"def"')
       })
 
       it('should lex operators', () => {
+        const l = lexerFactory('- : ( ) [ ] * / + =')
         expectToken(l.nextToken(), TokenType.Dash, '-')
         expectToken(l.nextToken(), TokenType.Colon, ':')
         expectToken(l.nextToken(), TokenType.LeftParen, '(')
@@ -199,16 +186,19 @@ _def`
       })
 
       it('should lex keywords', () => {
+        const l = lexerFactory('if while')
         expectToken(l.nextToken(), TokenType.KeywordIf, 'if')
         expectToken(l.nextToken(), TokenType.KeywordWhile, 'while')
       })
 
       it('should lex identifiers', () => {
+        const l = lexerFactory('abc _def')
         expectToken(l.nextToken(), TokenType.Ident, 'abc')
         expectToken(l.nextToken(), TokenType.Ident, '_def')
       })
 
       it('should lex EOF tokens', () => {
+        const l = lexerFactory('')
         expectToken(l.nextToken(), TokenType.EOF, '')
         expectToken(l.nextToken(), TokenType.EOF, '')
         expectToken(l.nextToken(), TokenType.EOF, '')
