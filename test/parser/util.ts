@@ -33,7 +33,7 @@ class TestFileRunner {
     this.tests = tests
   }
 
-  run (name: string) {
+  testAST (name: string) {
     if (this.tests[name] !== undefined) {
       let t = this.tests[name]
       let p = new Parser(t.input)

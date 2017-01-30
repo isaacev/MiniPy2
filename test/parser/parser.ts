@@ -145,15 +145,15 @@ describe('parser', () => {
       let ifTests = parseTestFile('statements/if.txt')
 
       it('should parse if conditions', () => {
-        ifTests.run('if condition')
+        ifTests.testAST('if condition')
       })
 
       it('should parse if-else conditions', () => {
-        ifTests.run('if-else condition')
+        ifTests.testAST('if-else condition')
       })
 
       it('should parse if-elif-else conditions', () => {
-        ifTests.run('if-elif-else condition')
+        ifTests.testAST('if-elif-else condition')
       })
     })
 
@@ -161,7 +161,7 @@ describe('parser', () => {
       let whileTests = parseTestFile('statements/while.txt')
 
       it('should parse while conditions', () => {
-        whileTests.run('while condition')
+        whileTests.testAST('while condition')
       })
     })
   })
