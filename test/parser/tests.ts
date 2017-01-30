@@ -7,5 +7,6 @@
 
 import './token'
 import './grammar'
+import './preprocess'
 import './lexer'
 import './parser'
