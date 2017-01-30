@@ -1,5 +1,5 @@
 //
-// test/util.ts
+// test/parser/util.ts
 // MiniPy2
 //
 // Created on 1/28/17
