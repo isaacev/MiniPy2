@@ -362,7 +362,7 @@ function lexIdentifier (l: Lexer): stateFn {
           case grammar.isKeyword(word):
             l.emit(grammar.keywords[word])
             break
-          case word === 'true' || word === 'false':
+          case word === 'True' || word === 'False':
             l.emit(TokenType.Bool)
             break
           default:

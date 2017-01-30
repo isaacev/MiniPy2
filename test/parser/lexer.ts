@@ -152,9 +152,9 @@ describe('lexer', () => {
   describe('#nextToken', () => {
     describe('legal syntax', () => {
       it('should lex boolean literals', () => {
-        const l = lexerFactory('true false')
-        expectToken(l.nextToken(), TokenType.Bool, 'true')
-        expectToken(l.nextToken(), TokenType.Bool, 'false')
+        const l = lexerFactory('True False')
+        expectToken(l.nextToken(), TokenType.Bool, 'True')
+        expectToken(l.nextToken(), TokenType.Bool, 'False')
       })
 
       it('should lex number literals', () => {
