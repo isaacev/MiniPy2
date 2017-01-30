@@ -159,7 +159,7 @@ describe('parser', () => {
       })
 
       it('should reject missing terminators', () => {
-        expectSyntaxError('a + b c - d', `(1:7) unexpected 'IDENT'`)
+        expectSyntaxError('a + b c - d', `(1:7) unexpected 'Ident'`)
       })
     })
 

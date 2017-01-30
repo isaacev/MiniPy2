@@ -70,8 +70,8 @@ export function isKeyword (word: string): boolean {
 }
 
 export const keywords: { [key: string]: TokenType } = {
-  'if': TokenType.KeywordIf,
-  'elif': TokenType.KeywordElif,
-  'else': TokenType.KeywordElse,
-  'while': TokenType.KeywordWhile,
+  'if': TokenType.If,
+  'elif': TokenType.Elif,
+  'else': TokenType.Else,
+  'while': TokenType.While,
 }

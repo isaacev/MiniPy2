@@ -14,13 +14,13 @@ export enum TokenType {
 
   // Word-like tokens.
   Ident,
-  KeywordAnd,
-  KeywordNot,
-  KeywordOr,
-  KeywordIf,
-  KeywordElif,
-  KeywordElse,
-  KeywordWhile,
+  And,
+  Not,
+  Or,
+  If,
+  Elif,
+  Else,
+  While,
 
   // Literals.
   Bool,
@@ -45,20 +45,6 @@ export enum TokenType {
 
 export function tokenTypeToSymbol (typ: TokenType): string {
   switch (typ) {
-    case TokenType.EOF:           return 'EOF'
-    case TokenType.Indent:        return 'INDENT'
-    case TokenType.Dedent:        return 'DEDENT'
-    case TokenType.Ident:         return 'IDENT'
-    case TokenType.KeywordAnd:    return 'AND'
-    case TokenType.KeywordNot:    return 'NOT'
-    case TokenType.KeywordOr:     return 'OR'
-    case TokenType.KeywordIf:     return 'IF'
-    case TokenType.KeywordElif:   return 'ELIF'
-    case TokenType.KeywordElse:   return 'ELSE'
-    case TokenType.KeywordWhile:  return 'WHILE'
-    case TokenType.Bool:          return 'BOOL'
-    case TokenType.Num:           return 'NUM'
-    case TokenType.Str:           return 'STR'
     case TokenType.Asterisk:      return '*'
     case TokenType.Colon:         return ':'
     case TokenType.SemiColon:     return ';'
@@ -72,6 +58,7 @@ export function tokenTypeToSymbol (typ: TokenType): string {
     case TokenType.RightParen:    return ')'
     case TokenType.Slash:         return '/'
     case TokenType.Assign:        return '='
+    default:                      return TokenType[typ]
   }
 }
 

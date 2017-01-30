@@ -187,8 +187,8 @@ describe('lexer', () => {
 
       it('should lex keywords', () => {
         const l = lexerFactory('if while')
-        expectToken(l.nextToken(), TokenType.KeywordIf, 'if')
-        expectToken(l.nextToken(), TokenType.KeywordWhile, 'while')
+        expectToken(l.nextToken(), TokenType.If, 'if')
+        expectToken(l.nextToken(), TokenType.While, 'while')
       })
 
       it('should lex identifiers', () => {

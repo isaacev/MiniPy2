@@ -90,10 +90,10 @@ const precTable: { [sym: string]: PrecLevel } = {
  * function. Each parsing function returns an AST node.
  */
 const prefixParselets: { [sym: string]: prefixParseletFn } = {
-  "IDENT" : parseIdent,
-  "BOOL"  : parseBoolLit,
-  "NUM"   : parseNumLit,
-  "STR"   : parseStrLit,
+  "Ident" : parseIdent,
+  "Bool"  : parseBoolLit,
+  "Num"   : parseNumLit,
+  "Str"   : parseStrLit,
   "["     : parseArrLit,
   "("     : parseExprGroup,
   "-"     : parseUnaryPrefixExpr,
@@ -329,9 +329,9 @@ export default class Parser {
    */
   parseStmt (): ast.Stmt {
     switch (this.currToken.type) {
-      case TokenType.KeywordIf:
+      case TokenType.If:
         return parseIfStmt(this)
-      case TokenType.KeywordWhile:
+      case TokenType.While:
         return parseWhileStmt(this)
       default:
         return parseExprStmt(this)
@@ -359,14 +359,14 @@ export default class Parser {
 }
 
 function parseIfStmt (p: Parser): ast.IfStmt {
-  p.useToken(TokenType.KeywordIf)
+  p.useToken(TokenType.If)
 
   let ifCond = p.parseExpr(PrecLevel.Lowest)
   let ifClause = p.parseBlock()
 
   let elifClauses: ast.ElifClause[] = []
-  while (p.currTokenIs(TokenType.KeywordElif)) {
-    p.useToken(TokenType.KeywordElif)
+  while (p.currTokenIs(TokenType.Elif)) {
+    p.useToken(TokenType.Elif)
 
     let elifCond = p.parseExpr(PrecLevel.Lowest)
     let elifClause = p.parseBlock()
@@ -375,8 +375,8 @@ function parseIfStmt (p: Parser): ast.IfStmt {
   }
 
   let elseClause = null
-  if (p.currTokenIs(TokenType.KeywordElse)) {
-    p.useToken(TokenType.KeywordElse)
+  if (p.currTokenIs(TokenType.Else)) {
+    p.useToken(TokenType.Else)
     elseClause = p.parseBlock()
   }
 
@@ -384,7 +384,7 @@ function parseIfStmt (p: Parser): ast.IfStmt {
 }
 
 function parseWhileStmt (p: Parser): ast.WhileStmt {
-  p.useToken(TokenType.KeywordWhile)
+  p.useToken(TokenType.While)
 
   let cond = p.parseExpr(PrecLevel.Lowest)
   let clause = p.parseBlock()
