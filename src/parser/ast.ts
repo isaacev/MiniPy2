@@ -159,6 +159,25 @@ export class ElifClause {
   }
 }
 
+export class AssignStmt {
+  token: Token
+  ident: Ident
+  expr: Expr
+
+  constructor (tok: Token, ident: Ident, expr: Expr) {
+    this.token = tok
+    this.ident = ident
+    this.expr = expr
+  }
+
+  toString (): string {
+    return `(= ${this.ident.toString()} ${this.expr.toString()})`
+  }
+
+  /* istanbul ignore next */
+  stmtNode () {}
+}
+
 export class ExprStmt {
   expr: Expr
 

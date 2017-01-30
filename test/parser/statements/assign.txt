@@ -1,0 +1,14 @@
++++ identifier assignment
+a = 100;
+---
+(= a 100)
+---
+
+
++++ list element assignment
+a[0] = 100;
+b[1][2] = 200;
+---
+(= a[0] 100)
+(= b[1][2] 200)
+---

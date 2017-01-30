@@ -152,7 +152,7 @@ describe('parser', () => {
   })
 
   describe('#parseStmt', () => {
-    describe('simple statements', () => {
+    describe('expression statements', () => {
       it('should respect semicolon and EOF terminators', () => {
         expectStmtAST('a + b', '(+ a b)')
         expectStmtAST('a + b;', '(+ a b)')
@@ -162,6 +162,18 @@ describe('parser', () => {
 
       it('should reject missing terminators', () => {
         expectSyntaxError('a + b c - d', `(1:7) unexpected 'Ident'`)
+      })
+    })
+
+    describe('assignment statements', () => {
+      let assignmentTests = parseTestFile('statements/assign.txt')
+
+      it('should parse identifier assignment', () => {
+        assignmentTests.testAST('identifier assignment')
+      })
+
+      it('should parse list element assignment', () => {
+        assignmentTests.testAST('list element assignment')
       })
     })
 

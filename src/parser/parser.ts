@@ -37,7 +37,6 @@ enum PrecLevel {
  * lowest precedence.
  */
 const precTable: { [sym: string]: PrecLevel } = {
-  "="  : PrecLevel.Assignment,
   "==" : PrecLevel.Equals,
   "!=" : PrecLevel.Equals,
   "<"  : PrecLevel.Relative,
@@ -115,7 +114,6 @@ const infixParselets: { [sym: string]: infixParseletFn } = {
   ">"  : parseBinaryInfixExpr,
   "<=" : parseBinaryInfixExpr,
   ">=" : parseBinaryInfixExpr,
-  "="  : parseBinaryInfixExpr,
   "["  : parseArrAccess,
 }
 
@@ -285,6 +283,14 @@ export default class Parser {
     }
   }
 
+  noInfixParseletExists (tok: Token): boolean {
+    if (this.lookupInfixParselet(tok) === undefined) {
+      return true
+    }
+
+    return false
+  }
+
   /**
    * parseExpr represents the core of the parsing module's expression parsing
    * logic. Each run of the parseExpr function will parse one expression
@@ -312,6 +318,16 @@ export default class Parser {
      * than the minimum precedence level passed into this function.
      */
     while (this.currPrecedence() > minPrecedence) {
+      if (this.noInfixParseletExists(this.currToken)) {
+        /**
+         * If the current expression can't be parsed any further, require that
+         * the next token is allowed to come after an expression. Throw an error
+         * if the next token is illegal.
+         */
+        this.expectExprTerminator()
+        return expr
+      }
+
       // Apply the appropriate infix parsing function to the token stream.
       let infixParselet = this.lookupInfixParselet(this.currToken)
       expr = infixParselet(this, expr)
@@ -408,8 +424,29 @@ function parseWhileStmt (p: Parser): ast.WhileStmt {
  * rather than intention and may signal the existence of a bug or some other
  * unexpected behavior.
  */
-function parseExprStmt (p: Parser): ast.ExprStmt {
+function parseExprStmt (p: Parser): ast.Stmt {
   let expr = p.parseExpr(PrecLevel.Lowest)
+
+  if (p.currTokenIs(TokenType.Assign)) {
+    let oper = p.useToken(TokenType.Assign)
+    let right = p.parseExpr(PrecLevel.Lowest)
+
+    switch (true) {
+      case (expr instanceof ast.Ident):
+      case (expr instanceof ast.ArrAccess):
+        break
+      default:
+        throw new Error('illegal left hand side of assignment')
+    }
+
+    let ident = expr as ast.Ident
+
+    p.expectExprTerminator()
+    p.expectStmtTerminator()
+    p.useAnyToken()
+
+    return new ast.AssignStmt(oper, ident, right)
+  }
 
   p.expectExprTerminator()
   p.expectStmtTerminator()
