@@ -116,6 +116,7 @@ const infixParselets: { [sym: string]: infixParseletFn } = {
   "<=" : parseBinaryInfixExpr,
   ">=" : parseBinaryInfixExpr,
   "="  : parseBinaryInfixExpr,
+  "["  : parseArrAccess,
 }
 
 /**
@@ -463,6 +464,14 @@ function parseArrLit (p: Parser): ast.ArrLit {
   let rightBracket = p.useToken(TokenType.RightBracket)
 
   return new ast.ArrLit(leftBracket, elems, rightBracket)
+}
+
+function parseArrAccess (p: Parser, root: ast.Expr): ast.ArrAccess {
+  let leftBracket = p.useToken(TokenType.LeftBracket)
+  let index = p.parseExpr(PrecLevel.Lowest)
+  let rightBracket = p.useToken(TokenType.RightBracket)
+
+  return new ast.ArrAccess(root, leftBracket, index, rightBracket)
 }
 
 /**

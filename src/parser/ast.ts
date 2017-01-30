@@ -255,6 +255,27 @@ export class ArrLit {
   exprNode () {}
 }
 
+export class ArrAccess {
+  root: Expr
+  leftBracket: Token
+  index: Expr
+  rightBracket: Token
+
+  constructor (root: Expr, leftBracket: Token, index: Expr, rightBracket: Token) {
+    this.root = root
+    this.leftBracket = leftBracket
+    this.index = index
+    this.rightBracket = rightBracket
+  }
+
+  toString (): string {
+    return `${this.root.toString()}[${this.index.toString()}]`
+  }
+
+  /* istanbul ignore next */
+  exprNode () {}
+}
+
 export class BinaryExpr {
   token: Token
   a: Expr
