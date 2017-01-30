@@ -124,38 +124,16 @@ const infixParselets: { [sym: string]: infixParseletFn } = {
  * tasks.
  */
 export default class Parser {
-  /**
-   * A string of raw source code to be lexed and parsed. When syntax errors are
-   * detected this string is used to produce more revealing error messages.
-   */
   input: string
-
-  /**
-   * A token lexer that emits a stream of tokens from the source code input
-   * passed to the parser upon construction.
-   */
   private lexer: Lexer
-
-  /**
-   * The token currently in the process of being assigned to an expression. See
-   * {@link Parser#parseExpr} for an example of how this parameter is used
-   * during expression parsing.
-   */
   private currToken: Token
 
-  /**
-   * Creates an instance of Parser.
-   */
   constructor (input: string) {
     this.input = input
     this.lexer = new Lexer(input)
     this.currToken = this.lexer.nextToken()
   }
 
-  /**
-   * Parse the source code as a full program with a list of 0+ statements at the
-   * top of the AST.
-   */
   parseProg (): ast.Program {
     let stmts = []
     while (true) {
@@ -170,26 +148,14 @@ export default class Parser {
     return new ast.Program(stmts)
   }
 
-  /**
-   * A private method for advancing the token stream by 1 token and setting the
-   * {@link Parser#currToken} property to the next token returned by the lexer.
-   */
   private advanceTokenStream () {
     this.currToken = this.lexer.nextToken()
   }
 
-  /**
-   * Return true if {@link Parser#currToken} matches the given token type.
-   */
   currTokenIs (typ: TokenType): boolean {
     return (this.currToken.type === typ)
   }
 
-  /**
-   * Return {@link Parser#currToken} and advance the token stream if the
-   * token matches the given token type. Throw an error if the
-   * {@link Parser#currToken} doesn't match the given {@link TokenType}.
-   */
   useToken (typ: TokenType): Token {
     if (this.currTokenIs(typ)) {
       let tok = this.currToken
@@ -197,15 +163,15 @@ export default class Parser {
       return tok
     }
 
+    // Throw an error if the token wansn't the expected type.
     let wantedSym = tokenTypeToSymbol(typ)
     let gotSym = this.currToken.toSymbol()
     this.fatalError(this.currToken, `expected '${wantedSym}', got '${gotSym}'`)
   }
 
   /**
-   * Return the {@link Parser#currToken} and advance the token stream. No token
-   * type checks are applied. Use sparingly and prefer {@link useToken} whenever
-   * possible.
+   * Use sparingly and prefer {@link useToken} when its possible to explicitly
+   * declare which token type is expected.
    */
   useAnyToken (): Token {
     let tok = this.currToken
@@ -232,9 +198,6 @@ export default class Parser {
     }
   }
 
-  /**
-   * TODO
-   */
   expectExprTerminator () {
     switch (true) {
       case this.isStmtTerminator():
@@ -247,10 +210,6 @@ export default class Parser {
     }
   }
 
-  /**
-   * Throw a {@link SyntaxError} with the current line number, column number,
-   * and with the given error message.
-   */
   fatalError (tok: Token, msg: string) {
     let pos = this.lexer.getLineCol(tok.loc)
     throw new SyntaxError(this.input, msg, pos[0], pos[1])
@@ -277,20 +236,12 @@ export default class Parser {
     this.fatalError(this.currToken, `unexpected '${sym}'`)
   }
 
-  /**
-   * Lookup a given token in the prefix parselet table using the token's symbol.
-   * Return `undefined` if the token's symbol isn't in the table.
-   */
   lookupPrefixParselet (tok: Token): prefixParseletFn {
     let sym = tok.toSymbol()
 
     return prefixParselets[sym]
   }
 
-  /**
-   * Lookup a given token in the infix parselet table using the token's symbol.
-   * Return `undefined` if the token's symbol isn't in the table.
-   */
   lookupInfixParselet (tok: Token): infixParseletFn {
     let sym = tok.toSymbol()
 
@@ -350,12 +301,8 @@ export default class Parser {
       this.throwPrefixParsingError(this.currToken)
     }
 
-    // Once it's known that the token is legal, get the appropriate parsing
-    // function from the prefix parselet lookup table.
+    // Apply the appropriate prefix parsing function to the token stream.
     let prefixParselet = this.lookupPrefixParselet(this.currToken)
-
-    // Apply the prefix parselet to the stream of tokens to begin generating
-    // an AST node for this expression.
     let expr = prefixParselet(this)
 
     /**
@@ -364,17 +311,11 @@ export default class Parser {
      * than the minimum precedence level passed into this function.
      */
     while (this.currPrecedence() > minPrecedence) {
-      // Once it's known that the token is legal, get the appropriate parsing
-      // function from the infix parselet lookup table.
+      // Apply the appropriate infix parsing function to the token stream.
       let infixParselet = this.lookupInfixParselet(this.currToken)
-
-      // Apply the infix parselet to the stream of tokens to expand the current
-      // expression and AST node.
       expr = infixParselet(this, expr)
     }
 
-    // Return the parsed AST node once the expression can't be expanded any
-    // further because of precedence limits or an exhaustion of the lexer.
     return expr
   }
 
@@ -476,43 +417,24 @@ function parseExprStmt (p: Parser): ast.ExprStmt {
   return new ast.ExprStmt(expr)
 }
 
-/**
- * parseIdent parses a single variable identifier token.
- */
 function parseIdent (p: Parser): ast.Ident {
   return new ast.Ident(p.useToken(TokenType.Ident))
 }
 
-/**
- * parseBoolLit parses a single boolean literal token.
- */
 function parseBoolLit (p: Parser): ast.BoolLit {
   return new ast.BoolLit(p.useToken(TokenType.Bool))
 }
 
-/**
- * parseNumLit parses a single number literal token.
- */
 function parseNumLit (p: Parser): ast.NumLit {
   return new ast.NumLit(p.useToken(TokenType.Num))
 }
 
-/**
- * parseStrLit parses a single string literal token.
- */
 function parseStrLit (p: Parser): ast.StrLit {
   return new ast.StrLit(p.useToken(TokenType.Str))
 }
 
-/**
- * parseArrLit parses an array literal which is 0 or more expressions between
- * square brackets. Trailing commas are permitted.
- */
 function parseArrLit (p: Parser): ast.ArrLit {
-  // Consume left bracket.
   let leftBracket = p.useToken(TokenType.LeftBracket)
-
-  // Initialize container for parsed elements.
   let elems: ast.Expr[] = []
 
   // Parse all literal elements.
@@ -538,7 +460,6 @@ function parseArrLit (p: Parser): ast.ArrLit {
     }
   }
 
-  // Expect a right bracket to exist at the end of the array.
   let rightBracket = p.useToken(TokenType.RightBracket)
 
   return new ast.ArrLit(leftBracket, elems, rightBracket)
@@ -549,13 +470,8 @@ function parseArrLit (p: Parser): ast.ArrLit {
  * the inner expression.
  */
 function parseExprGroup (p: Parser): ast.Expr {
-  // Consume left paren.
   p.useToken(TokenType.LeftParen)
-
-  // Parse inner expression.
   let expr = p.parseExpr(PrecLevel.Lowest)
-
-  // Consume right paren.
   p.useToken(TokenType.RightParen)
 
   return expr
@@ -571,13 +487,8 @@ function parseExprGroup (p: Parser): ast.Expr {
  * logical operations.
  */
 function parseBinaryInfixExpr (p: Parser, left: ast.Expr): ast.BinaryExpr {
-  // Determine precedence of current token so that the right-hand expression.
   let precedence = p.currPrecedence()
-
-  // Parse the infix operator token.
   let oper = p.useAnyToken()
-
-  // Parse right-hand operand expression.
   let right = p.parseExpr(precedence)
 
   return new ast.BinaryExpr(oper, left, right)
@@ -593,10 +504,7 @@ function parseBinaryInfixExpr (p: Parser, left: ast.Expr): ast.BinaryExpr {
  * logical not (`not` and `!`).
  */
 function parseUnaryPrefixExpr (p: Parser): ast.UnaryExpr {
-  // Parse the prefix operator token.
   let oper = p.useAnyToken()
-
-  // Parse the right-hand operand
   let right = p.parseExpr(PrecLevel.Prefix)
 
   return new ast.UnaryExpr(oper, right)
