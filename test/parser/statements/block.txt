@@ -1,0 +1,91 @@
++++ newline compression
+
+
+
+    foo
+---
+INDENT
+IDENT
+DEDENT
+EOF
+---
+
++++ single space indent
+001
+ 101
+ 102
+  201
+   301
+ 103
+---
+NUM
+INDENT
+NUM
+NUM
+INDENT
+NUM
+INDENT
+NUM
+DEDENT
+DEDENT
+NUM
+DEDENT
+EOF
+---
+
++++ octuple space indent
+001
+        101
+        102
+                201
+                        301
+        103
+---
+NUM
+INDENT
+NUM
+NUM
+INDENT
+NUM
+INDENT
+NUM
+DEDENT
+DEDENT
+NUM
+DEDENT
+EOF
+---
+
++++ crazy space indent
+001
+ 101
+ 102
+       201
+        301
+ 103
+---
+NUM
+INDENT
+NUM
+NUM
+INDENT
+NUM
+INDENT
+NUM
+DEDENT
+DEDENT
+NUM
+DEDENT
+EOF
+---
+
++++ comment block
+block:
+  # comment
+---
+IDENT
+:
+INDENT
+DEDENT
+EOF
+---

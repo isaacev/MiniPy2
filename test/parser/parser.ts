@@ -127,6 +127,28 @@ describe('parser', () => {
     })
   })
 
+  describe('#parseBlock', () => {
+    let blockTests = parseTestFile('statements/block.txt')
+
+    describe('whitespace', () => {
+      it('should compress consecutive newlines', () => {
+        blockTests.testTokens('newline compression')
+      })
+
+      it('should respect multiple indentation schemes', () => {
+        blockTests.testTokens('single space indent')
+        blockTests.testTokens('octuple space indent')
+        blockTests.testTokens('crazy space indent')
+      })
+    })
+
+    describe('contents', () => {
+      it('should allow blocks only a single comment', () => {
+        blockTests.testTokens('comment block')
+      })
+    })
+  })
+
   describe('#parseStmt', () => {
     describe('simple statements', () => {
       it('should respect semicolon and EOF terminators', () => {
