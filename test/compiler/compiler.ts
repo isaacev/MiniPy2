@@ -8,4 +8,15 @@
 import { parseTestFile } from './util'
 
 describe('compiler', () => {
+  describe('#compileExpr', () => {
+    let exprTests = parseTestFile('tests/expr.txt')
+
+    it('should compile binary add', () => {
+      exprTests.testBytestream('add expression')
+    })
+
+    it('should compile compound binary addition', () => {
+      exprTests.testBytestream('compound add expression')
+    })
+  })
 })

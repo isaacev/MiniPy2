@@ -1,0 +1,20 @@
++++ add expression
+2 + 3
+---
+Push	3
+Push	2
+Add
+Halt
+---
+
+
++++ compound add expression
+2 + 3 + 5
+---
+Push	5
+Push	3
+Push	2
+Add
+Add
+Halt
+---
