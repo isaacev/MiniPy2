@@ -89,6 +89,8 @@ describe('parser', () => {
       it('should parse binary infix operators', () => {
         expectExprAST('a + a', '(+ a a)')
         expectExprAST('a - a', '(- a a)')
+        expectExprAST('a > a', '(> a a)')
+        expectExprAST('a < a', '(< a a)')
       })
 
       it('should parse infix and prefix operators together', () => {

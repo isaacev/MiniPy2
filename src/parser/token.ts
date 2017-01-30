@@ -40,7 +40,9 @@ export enum TokenType {
   RightBracket,
   RightParen,
   Slash,
-  Assign
+  LessThan,
+  Assign,
+  GreaterThan,
 }
 
 export function tokenTypeToSymbol (typ: TokenType): string {
@@ -57,7 +59,9 @@ export function tokenTypeToSymbol (typ: TokenType): string {
     case TokenType.RightBracket:  return ']'
     case TokenType.RightParen:    return ')'
     case TokenType.Slash:         return '/'
+    case TokenType.LessThan:      return '<'
     case TokenType.Assign:        return '='
+    case TokenType.GreaterThan:   return '>'
     default:                      return TokenType[typ]
   }
 }

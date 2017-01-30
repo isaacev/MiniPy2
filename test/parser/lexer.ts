@@ -172,7 +172,7 @@ describe('lexer', () => {
       })
 
       it('should lex operators', () => {
-        const l = lexerFactory('- : ( ) [ ] * / + =')
+        const l = lexerFactory('- : ( ) [ ] * / + < = >')
         expectToken(l.nextToken(), TokenType.Dash, '-')
         expectToken(l.nextToken(), TokenType.Colon, ':')
         expectToken(l.nextToken(), TokenType.LeftParen, '(')
@@ -182,7 +182,9 @@ describe('lexer', () => {
         expectToken(l.nextToken(), TokenType.Asterisk, '*')
         expectToken(l.nextToken(), TokenType.Slash, '/')
         expectToken(l.nextToken(), TokenType.Plus, '+')
+        expectToken(l.nextToken(), TokenType.LessThan, '<')
         expectToken(l.nextToken(), TokenType.Assign, '=')
+        expectToken(l.nextToken(), TokenType.GreaterThan, '>')
       })
 
       it('should lex keywords', () => {

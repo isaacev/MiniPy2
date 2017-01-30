@@ -295,8 +295,12 @@ function lexOperator (l: Lexer): stateFn {
       return l.emit(TokenType.Slash)
     case '+':
       return l.emit(TokenType.Plus)
+    case '<':
+      return l.emit(TokenType.LessThan)
     case '=':
       return l.emit(TokenType.Assign)
+    case '>':
+      return l.emit(TokenType.GreaterThan)
     /* istanbul ignore next */
     default:
       // If execution reaches this point, that constitutes a bug caused by a

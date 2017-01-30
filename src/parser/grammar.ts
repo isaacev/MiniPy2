@@ -43,7 +43,9 @@ export function isOperatorStart (c: string): boolean {
     '*',
     '/',
     '+',
-    '='
+    '<',
+    '=',
+    '>',
   ]
 
   return (ops.indexOf(c) >= 0)
