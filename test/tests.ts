@@ -6,3 +6,4 @@
 //
 
 import './parser/tests'
+import './compiler/tests'
