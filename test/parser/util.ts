@@ -12,6 +12,8 @@ import 'mocha'
 import { expect } from 'chai'
 
 // Local modules.
+import { TokenType } from '../../src/parser/token'
+import Lexer from '../../src/parser/lexer'
 import Parser from '../../src/parser/parser'
 
 class TestPair {
@@ -31,6 +33,28 @@ class TestFileRunner {
 
   constructor (tests: TestHash) {
     this.tests = tests
+  }
+
+  testTokens (name: string) {
+    if (this.tests[name] !== undefined) {
+      let t = this.tests[name]
+      let l = new Lexer(t.input)
+
+      let expectedSymbols = t.output.trim().split('\n')
+      let nextSymbol = 0
+
+      while (true) {
+        let sym = expectedSymbols[nextSymbol++] || 'EOF'
+        let tok = l.nextToken()
+        expect(tok.toSymbol()).to.equal(sym)
+
+        if (tok.type === TokenType.EOF) {
+          break
+        }
+      }
+    } else {
+      throw new Error(`no test named '${name}'`)
+    }
   }
 
   testAST (name: string) {
