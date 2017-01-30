@@ -213,18 +213,11 @@ function lexLineBreak (l: Lexer): stateFn {
   }
 
   /**
-   * Second stage checks counts how deeply indented the current line is. If
-   * the line has only inline whitespace characters, throw an error since
-   * trailing whitespace is an error.
+   * Second stage checks counts how deeply indented the current line is.
    */
 
   // Counts number of inline whitespace characters at the start of the line.
   let indentDepth = getIndentDepth(l)
-
-  // Catches lines with only trailing whitespace.
-  if (indentDepth > 0 && grammar.isLineBreak(l.peekChar())) {
-    throw new Error('no trailing whitespace')
-  }
 
   /**
    * Third stage determines whether the indentaiton on the current line is more
